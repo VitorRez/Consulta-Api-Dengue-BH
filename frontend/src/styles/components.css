@@ -1,0 +1,27 @@
+@layer components{
+    .card{
+        @apply border-4 rounded-lg p-4 min-w-[200px] text-center bg-white shadow-sm;
+    }
+
+    .card-semana-título{
+        @apply text-lg font-bold text-gray-800;
+    }
+
+    .card-subtitulo{
+        @apply text-xs text-gray-500 -mt-1;
+    }
+
+    .card-linha{
+        @apply text-sm text-gray-700;
+    }
+
+    .nivel-1-border {@apply border-green-500;}
+    .nivel-2-border {@apply border-yellow-400;}
+    .nivel-3-border {@apply border-orange-500;}
+    .nivel-4-border {@apply border-red-500;}
+
+    .nivel-1-text {@apply text-green-600;}
+    .nivel-2-text {@apply text-yellow-600;}
+    .nivel-3-text {@apply text-orange-600;}
+    .nivel-4-text {@apply text-red-600;}
+}

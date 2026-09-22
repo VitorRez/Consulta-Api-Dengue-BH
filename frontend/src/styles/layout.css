@@ -1,0 +1,53 @@
+@layer components {
+  .app-container {
+    @apply min-h-screen bg-gray-900;
+  }
+
+  .app-inner {
+    @apply max-w-5xl mx-auto px-6 py-10;
+  }
+
+  .app-header {
+    @apply text-center mb-10;
+  }
+
+  .app-titulo {
+    @apply text-3xl font-bold text-gray-100;
+  }
+
+  .app-subtitulo {
+    @apply text-gray-400 mt-2;
+  }
+
+  .app-secao {
+    @apply mb-12;
+  }
+
+  .app-secao-titulo {
+    @apply text-xl font-semibold text-gray-200 mb-4;
+  }
+
+  .app-secao-titulo-centro {
+    @apply text-xl font-semibold text-gray-200 text-center mb-4;
+  }
+
+  .app-linha-cards {
+    @apply flex flex-wrap gap-4 justify-center;
+  }
+
+  .app-painel {
+    @apply bg-gray-800 rounded-lg shadow-lg p-4;
+  }
+
+  .app-painel-tabela {
+    @apply bg-gray-800 rounded-lg shadow-lg overflow-hidden;
+  }
+
+  .app-loading {
+    @apply text-center text-gray-400;
+  }
+
+  .app-erro {
+    @apply text-center text-red-400 font-medium;
+  }
+}

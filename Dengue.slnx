@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/backend/" />
+  <Folder Name="/backend/src/">
+    <Project Path="backend/src/Dengue.Api/Dengue.Api.csproj" />
+    <Project Path="backend/src/Dengue.Application/Dengue.Application.csproj" />
+    <Project Path="backend/src/Dengue.Domain/Dengue.Domain.csproj" />
+    <Project Path="backend/src/Dengue.Infrastructure/Dengue.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/backend/tests/">
+    <Project Path="backend/tests/Dengue.Tests/Dengue.Tests.csproj" />
+  </Folder>
+</Solution>

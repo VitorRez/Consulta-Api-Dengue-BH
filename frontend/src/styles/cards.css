@@ -1,0 +1,55 @@
+@layer components {
+  .card {
+    @apply border-4 rounded-lg p-4 min-w-[200px] text-center bg-gray-800 shadow-lg;
+  }
+
+  .card-vazio {
+    @apply border border-gray-700 rounded-lg p-4 min-w-[180px] text-center bg-gray-800;
+  }
+
+  .card-titulo {
+    @apply text-lg font-bold text-gray-100;
+  }
+
+  .card-subtitulo {
+    @apply text-xs text-gray-400 -mt-1;
+  }
+
+  .card-destaque-titulo {
+    @apply text-base font-bold;
+  }
+
+  .card-destaque-semana {
+    @apply font-bold text-gray-100;
+  }
+
+  .card-linha {
+    @apply text-sm text-gray-300;
+  }
+
+  .card-linha-espaco {
+    @apply text-sm text-gray-300 mt-3;
+  }
+
+  .card-linha-final {
+    @apply text-sm text-gray-300 mt-2;
+  }
+
+  .card-nivel {
+    @apply font-bold;
+  }
+
+  /* Cores por nível — borda */
+  .nivel-1-border { @apply border-green-500; }
+  .nivel-2-border { @apply border-yellow-400; }
+  .nivel-3-border { @apply border-orange-500; }
+  .nivel-4-border { @apply border-red-500; }
+  .nivel-0-border { @apply border-gray-500; }
+
+  /* Cores por nível — texto */
+  .nivel-1-text { @apply text-green-400; }
+  .nivel-2-text { @apply text-yellow-400; }
+  .nivel-3-text { @apply text-orange-400; }
+  .nivel-4-text { @apply text-red-400; }
+  .nivel-0-text { @apply text-gray-400; }
+}
