@@ -4,7 +4,7 @@ Aplicação full-stack que consulta dados de alertas de dengue da API [AlertaDen
 
 ---
 
-## 📋 Sumário
+## Sumário
 
 - [Visão Geral](#-visão-geral)
 - [Arquitetura](#-arquitetura)
@@ -19,7 +19,7 @@ Aplicação full-stack que consulta dados de alertas de dengue da API [AlertaDen
 
 ---
 
-## 🎯 Visão Geral
+## Visão Geral
 
 A aplicação resolve três problemas:
 
@@ -29,7 +29,7 @@ A aplicação resolve três problemas:
 
 ---
 
-## 🏗️ Arquitetura
+## Arquitetura
 
 O backend segue **Clean Architecture** em 4 camadas, com dependências apontando sempre para o centro (Domain):
 
@@ -73,7 +73,7 @@ O backend segue **Clean Architecture** em 4 camadas, com dependências apontando
 
 ---
 
-## 🧰 Tecnologias
+## Tecnologias
 
 ### Backend
 - **.NET 10** com C#
@@ -95,7 +95,7 @@ O backend segue **Clean Architecture** em 4 camadas, com dependências apontando
 
 ---
 
-## ✅ Pré-requisitos
+## Pré-requisitos
 
 | Ferramenta | Versão mínima | Como verificar |
 |---|---|---|
@@ -115,7 +115,7 @@ export PATH="$PATH:$HOME/.dotnet/tools"  # adicione ao ~/.bashrc para persistir
 
 ---
 
-## 🔐 Variáveis de Ambiente
+## Variáveis de Ambiente
 
 O projeto usa dois arquivos `.env`, ambos fora do versionamento (cobertos pelo `.gitignore`):
 
@@ -140,7 +140,7 @@ Cada arquivo tem um `.example` versionado no Git, que serve de template.
 
 ---
 
-## 🚀 Como Rodar
+## Como Rodar
 
 ### 1. Configurar variáveis de ambiente
 
@@ -162,9 +162,9 @@ MSSQL_SA_PASSWORD=SuaSenhaForte123
 CONNECTION_STRING=Server=localhost,1433;Database=DengueDb;User Id=sa;Password=SuaSenhaForte123;TrustServerCertificate=True;
 ```
 
-> ⚠️ A senha em `MSSQL_SA_PASSWORD` **precisa ser igual** à `Password=` do `CONNECTION_STRING`.
+> A senha em `MSSQL_SA_PASSWORD` **precisa ser igual** à `Password=` do `CONNECTION_STRING`.
 
-> 🔒 O arquivo `.env` está no `.gitignore` e nunca deve ser commitado.
+> O arquivo `.env` está no `.gitignore` e nunca deve ser commitado.
 
 ### 2. Subir o SQL Server
 
@@ -246,7 +246,7 @@ Acesse **http://localhost:5173**.
 
 ---
 
-## 🌐 Endpoints da API
+## Endpoints da API
 
 ### `GET /api/dengue?ew={ew}&ey={ey}`
 
@@ -339,7 +339,7 @@ curl -X POST "http://localhost:5096/api/dengue/sync"
 
 ---
 
-## 🧪 Testes
+## Testes
 
 Para rodar os testes do backend:
 
@@ -367,7 +367,7 @@ dotnet test backend/tests/Dengue.Tests/Dengue.Tests.csproj
 
 ---
 
-## 📁 Estrutura do Projeto
+## Estrutura do Projeto
 
 ```
 Teste Técnico/
@@ -402,66 +402,3 @@ Teste Técnico/
 ```
 
 ---
-
-## 🧠 Decisões Técnicas
-
-### Por que Clean Architecture?
-
-Separar Domain / Application / Infrastructure / API permite:
-
-- Trocar o banco (ex.: SQLite) sem mudar regras de negócio.
-- Testar o `DengueService` com mocks, sem precisar de banco real ou internet.
-- Manter o domínio livre de dependências externas.
-
-### Por que **upsert** em vez de apenas `Insert`?
-
-A API AlertaDengue **atualiza os dados retroativamente** a cada semana (o modelo de nowcasting ajusta os valores antigos). Se usássemos só `INSERT`, rodar o sync duas vezes causaria erro de chave duplicada. O upsert (chave natural `(Ew, Ey)`) atualiza os registros existentes.
-
-### Por que sync automático no startup?
-
-Para que qualquer pessoa que clone o repositório suba a API e já encontre dados, sem precisar chamar manualmente `/sync`. O `DengueSyncHostedService`:
-
-1. Ao iniciar, verifica se o banco está vazio. Se sim, sincroniza.
-2. Em paralelo, agenda uma execução semanal toda segunda-feira às 3h (UTC).
-3. O sync também pode ser disparado manualmente via `POST /api/dengue/sync`.
-
-### Por que usar `DotNetEnv` para carregar as credenciais?
-
-O `IConfiguration` do .NET **não substitui** `${VAR}` em arquivos JSON — isso é um recurso do Docker Compose, não do .NET. Para evitar senha hardcoded em `appsettings.json` (que vai pro Git), usamos a biblioteca `DotNetEnv`:
-
-1. A senha vive **só** no `.env` (não versionado).
-2. O `Program.cs` carrega o `.env` no startup via `Env.Load(...)`.
-3. A connection string é lida de `Environment.GetEnvironmentVariable("CONNECTION_STRING")`.
-4. Se a variável não existir, a aplicação falha na hora com mensagem clara, em vez de tentar conectar com uma senha inválida.
-
-Alternativas consideradas:
-
-- **`${VAR}` no `appsettings.json`**: não funciona, o .NET não substitui.
-- **Variáveis de ambiente do sistema**: exigiria `export` antes de rodar, o que é chato no dia a dia.
-- **Hardcoded no `appsettings.json`**: vaza a senha no Git.
-
-### Por que serializar JSON em `snake_case`?
-
-O desafio especifica o formato da resposta com campos como `semana_epidemiologica`, `casos_est` e `nivel_alerta`. Para não precisar anotar cada propriedade com `[JsonPropertyName]`, configuramos globalmente `JsonNamingPolicy.SnakeCaseLower` no `Program.cs`.
-
-### Por que Tailwind v4 com classes customizadas?
-
-O Tailwind v4 trouxe a diretiva `@apply` dentro de `@layer components`, o que permite definir classes reutilizáveis (ex.: `.card`, `.nivel-1-border`) em arquivos CSS separados. Isso reduz a repetição de classes longas no JSX e mantém os componentes legíveis.
-
-### Por que Vite em vez de CRA?
-
-Vite é mais rápido, tem HMR instantâneo e é o padrão da comunidade React em 2025+.
-
-### Tratamento de semanas sem dados no frontend
-
-A função `getLastWeeksWithData` no frontend:
-
-- Começa da semana **anterior** à atual (a atual pode não estar consolidada na API).
-- Se a semana retornar 404, pula para a anterior.
-- Para quando encontrar 3 semanas com dados, com um limite de 12 tentativas para não floodar o backend.
-
----
-
-## 📝 Licença
-
-Projeto desenvolvido como parte de um desafio técnico. Sem licença específica.
